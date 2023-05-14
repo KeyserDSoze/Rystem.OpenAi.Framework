@@ -43,7 +43,7 @@ namespace Rystem.OpenAi.Framework
             var request = _openAi.Chat.Request(new ChatMessage
             {
                 Role = ChatRole.System,
-                Content = OpenAiSystemPromptComposer.Composer[IntegrationName].ToString(),
+                Content = OpenAiSystemPromptComposer.FinalComposition,
             });
             foreach (var message in messages)
                 request.AddMessage(message);

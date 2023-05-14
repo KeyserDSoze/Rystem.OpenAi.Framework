@@ -9,7 +9,7 @@
             _openAiAgentFactory = openAiAgentFactory;
         }
         [Theory]
-        [InlineData("Azure", "Prepare a travel to Italy in Rome.")]
+        [InlineData("Azure", "Prepare a travel to Italy in Rome for 15-25 august 2023.")]
         public async Task TestAsync(string integrationName, string taskToDo)
         {
             var agent = _openAiAgentFactory.CreateAgent(integrationName);

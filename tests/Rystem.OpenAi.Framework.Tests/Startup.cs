@@ -65,7 +65,9 @@ namespace Rystem.OpenAi.Framework.Tests
             "Azure");
             var tasks = new List<ValueTask<List<AutomaticallyDeploymentResult>>>
             {
-                services.BuildServiceProvider().MapDeploymentsAutomaticallyAsync(true, "Azure")
+                services.BuildServiceProvider()
+                .MapOpenAiFrameworkActions()
+                .MapDeploymentsAutomaticallyAsync(true, "Azure")
             };
             var results = Task.WhenAll(tasks.Select(x => x.AsTask())).ConfigureAwait(false).GetAwaiter().GetResult();
             Assert.NotEmpty(results);
