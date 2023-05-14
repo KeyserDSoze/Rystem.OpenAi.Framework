@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <DebugSymbols>true</DebugSymbols>
+        <EmbedAllSources>true</EmbedAllSources>
+        <DebugType>portable</DebugType>
+        <Authors>Alessandro Rapiti</Authors>
+        <Company>Alessandro Rapiti</Company>
+        <Product>Rystem.OpenAi</Product>
+        <Title>OpenAI API for Azure</Title>
+        <Description>Framework to improve your OpenAi Experience. You can create your custom integration for prompting.</Description>
+        <PackageTags>OpenAi;AutoGtp</PackageTags>
+        <Copyright>2023</Copyright>
+        <PackageIcon>openai.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/KeyserDSoze/Rystem.OpenAi</RepositoryUrl>
+        <PackageId>Rystem.OpenAi.Framework.Abstractions</PackageId>
+        <Version>3.0.3</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <UserSecretsId>f8af9352-bb0e-40fc-a4e9-9b584f95729f</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Rystem" Version="4.1.20" />
+        <PackageReference Include="Rystem.OpenAi" Version="3.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="openai.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Update="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rystem.OpenAi.Framework.Abstractions", "src\Rystem.OpenAi.Framework.Abstractions\Rystem.OpenAi.Framework.Abstractions.csproj", "{E693CA3A-5AD2-46E3-BA20-D6C962D15643}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6EFC728A-CA10-4983-8543-55572F9825D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7BAF0C38-449E-4ED2-80B2-E9FA0AA2FB40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rystem.OpenAi.Framework.Tests", "tests\Rystem.OpenAi.Framework.Tests\Rystem.OpenAi.Framework.Tests.csproj", "{1FD227FE-9352-4BFD-97B6-1994B541F04F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rystem.OpenAi.Framework", "src\Rystem.OpenAi.Framework\Rystem.OpenAi.Framework.csproj", "{D0AD26FF-F90D-45F2-814E-BF0BB859B26C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E693CA3A-5AD2-46E3-BA20-D6C962D15643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E693CA3A-5AD2-46E3-BA20-D6C962D15643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E693CA3A-5AD2-46E3-BA20-D6C962D15643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E693CA3A-5AD2-46E3-BA20-D6C962D15643}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FD227FE-9352-4BFD-97B6-1994B541F04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD227FE-9352-4BFD-97B6-1994B541F04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD227FE-9352-4BFD-97B6-1994B541F04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD227FE-9352-4BFD-97B6-1994B541F04F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AD26FF-F90D-45F2-814E-BF0BB859B26C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AD26FF-F90D-45F2-814E-BF0BB859B26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AD26FF-F90D-45F2-814E-BF0BB859B26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AD26FF-F90D-45F2-814E-BF0BB859B26C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E693CA3A-5AD2-46E3-BA20-D6C962D15643} = {6EFC728A-CA10-4983-8543-55572F9825D4}
+		{1FD227FE-9352-4BFD-97B6-1994B541F04F} = {7BAF0C38-449E-4ED2-80B2-E9FA0AA2FB40}
+		{D0AD26FF-F90D-45F2-814E-BF0BB859B26C} = {6EFC728A-CA10-4983-8543-55572F9825D4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AED2FBEF-D63D-4EAB-844F-FC4FEB3960B2}
+	EndGlobalSection
+EndGlobal
