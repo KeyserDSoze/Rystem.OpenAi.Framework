@@ -6,8 +6,7 @@ namespace Rystem.OpenAi.Framework
     {
         public string Id => "1";
         public string Description => "simplify the problem with a list of tasks";
-
-        public ValueTask<ChatMessage[]> ExecuteAsync(IOpenAi openAi, string request)
+        public ValueTask<ChatMessage[]> ExecuteAsync(IOpenAi openAi, string request, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

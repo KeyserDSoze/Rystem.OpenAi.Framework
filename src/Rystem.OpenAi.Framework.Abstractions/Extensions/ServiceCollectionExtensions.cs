@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Rystem.OpenAi;
 using Rystem.OpenAi.Framework;
 
@@ -15,8 +16,12 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Invoke(build);
             services
                 .AddOpenAi(settings, integrationName);
-            services.AddTransient<IOpenAiAgentFactory, OpenAiAgentFactory>();
-            services.AddTransient<IOpenAiAgent, OpenAiAgent>();
+            services
+                .TryAddSingleton(OpenAiFrameworkConfiguration.Instance);
+            services
+                .TryAddTransient<IOpenAiAgentFactory, OpenAiAgentFactory>();
+            services
+                .TryAddTransient<IOpenAiAgent, OpenAiAgent>();
             return services;
         }
     }

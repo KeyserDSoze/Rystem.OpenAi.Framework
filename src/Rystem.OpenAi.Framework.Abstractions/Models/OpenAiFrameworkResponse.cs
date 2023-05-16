@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Rystem.OpenAi.Framework
 {

@@ -1,29 +1,25 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using System;
+using System.Collections.Generic;
 using Rystem.OpenAi.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public sealed class OpenAiFrameworkBuilder
     {
-        private readonly IServiceCollection _services;
+        public IServiceCollection Services { get; }
         private readonly string _integrationName;
-
         internal OpenAiFrameworkBuilder(IServiceCollection services, string integrationName)
         {
-            _services = services;
+            Services = services;
             _integrationName = integrationName;
+            if (!OpenAiFrameworkConfiguration.Instance.MappedActions.ContainsKey(_integrationName))
+                OpenAiFrameworkConfiguration.Instance.MappedActions.Add(_integrationName, new List<Type>());
         }
-        public OpenAiFrameworkBuilder AddAction<TOpenAiAction>(int index, string actionDescription)
+        public OpenAiFrameworkBuilder AddAction<TOpenAiAction>()
             where TOpenAiAction : class, IOpenAiAction
         {
-            _services.AddTransient<IOpenAiAction, TOpenAiAction>();
-            return this;
-        }
-        public OpenAiFrameworkBuilder AddAction<TOpenAiAction, TMessage>(int index, string actionDescription)
-            where TOpenAiAction : class, IOpenAiAction<TMessage>
-            where TMessage : class
-        {
-            _services.TryAddTransient<IOpenAiAction<TMessage>, TOpenAiAction>();
+            Services.AddTransient<IOpenAiAction, TOpenAiAction>();
+            OpenAiFrameworkConfiguration.Instance.MappedActions[_integrationName].Add(typeof(TOpenAiAction));
             return this;
         }
     }

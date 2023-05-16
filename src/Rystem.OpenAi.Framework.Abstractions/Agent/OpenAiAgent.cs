@@ -17,10 +17,12 @@ namespace Rystem.OpenAi.Framework
     {
         private readonly IOpenAi _openAi;
         private readonly IEnumerable<IOpenAiAction> _actions;
-        public OpenAiAgent(IOpenAi openAi, IEnumerable<IOpenAiAction> actions)
+        private readonly OpenAiFrameworkConfiguration _configuration;
+        public OpenAiAgent(IOpenAi openAi, IEnumerable<IOpenAiAction> actions, OpenAiFrameworkConfiguration configuration)
         {
             _openAi = openAi;
             _actions = actions;
+            _configuration = configuration;
         }
         public string IntegrationName { get; init; } = string.Empty;
         private readonly AgentStatus _status = new();
@@ -43,7 +45,7 @@ namespace Rystem.OpenAi.Framework
             var request = _openAi.Chat.Request(new ChatMessage
             {
                 Role = ChatRole.System,
-                Content = OpenAiSystemPromptComposer.FinalComposition,
+                Content = _configuration.GetSystemMessage(IntegrationName)
             });
             foreach (var message in messages)
                 request.AddMessage(message);
@@ -58,7 +60,7 @@ namespace Rystem.OpenAi.Framework
                 var actionToDo = _actions.FirstOrDefault(x => x.Id == action.CommandId);
                 if (actionToDo != null)
                 {
-                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, action.ActionToDo).NoContext());
+                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, action.ActionToDo, cancellationToken).NoContext());
                 }
             }
         }

@@ -32,6 +32,7 @@ namespace Rystem.OpenAi.Framework.Tests
             var tenantId = Environment.GetEnvironmentVariable("AzureADTenantId") ?? context.Configuration["AzureAd:TenantId"];
             var azureApiKey2 = Environment.GetEnvironmentVariable("Azure2ApiKey") ?? context.Configuration["Azure2:ApiKey"];
             var resourceName2 = Environment.GetEnvironmentVariable("Azure2ResourceName") ?? context.Configuration["Azure2:ResourceName"];
+            var webSearchApiKey = Environment.GetEnvironmentVariable("WebSearchSubscriptionKey") ?? context.Configuration["WebSearch:SubscriptionKey"];
             services
                 .AddOpenAiFrameworkWithDefaultActions(settings =>
                 {
@@ -39,6 +40,10 @@ namespace Rystem.OpenAi.Framework.Tests
                 },
                 builder =>
                 {
+                },
+                settings =>
+                {
+                    settings.BingWebSearchSubscriptionKey = webSearchApiKey;
                 });
             services.AddOpenAiFrameworkWithDefaultActions(settings =>
             {
@@ -61,6 +66,10 @@ namespace Rystem.OpenAi.Framework.Tests
             },
             builder =>
             {
+            },
+            settings =>
+            {
+                settings.BingWebSearchSubscriptionKey = webSearchApiKey;
             },
             "Azure");
             var tasks = new List<ValueTask<List<AutomaticallyDeploymentResult>>>
