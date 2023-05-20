@@ -10,7 +10,7 @@ namespace Rystem.OpenAi.Framework
 {
     public sealed class AgentStatus
     {
-        public decimal Cost { get; internal set; }
+        public decimal Cost { get; set; }
         public List<OpenAiFrameworkResponse> Responses { get; } = new List<OpenAiFrameworkResponse>();
     }
     internal sealed class OpenAiAgent : IOpenAiAgent
@@ -60,7 +60,7 @@ namespace Rystem.OpenAi.Framework
                 var actionToDo = _actions.FirstOrDefault(x => x.Id == action.CommandId);
                 if (actionToDo != null)
                 {
-                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, action.ActionToDo, cancellationToken).NoContext());
+                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, action.ActionToDo, _status, cancellationToken).NoContext());
                 }
             }
         }

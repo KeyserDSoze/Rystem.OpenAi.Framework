@@ -9,6 +9,6 @@ namespace Rystem.OpenAi.Framework
     {
         string Id { get; }
         string Description { get; }
-        ValueTask<ChatMessage[]> ExecuteAsync(IOpenAi openAi, string request, CancellationToken cancellationToken = default);
+        ValueTask<ChatMessage[]> ExecuteAsync(IOpenAi openAi, string request, AgentStatus status, CancellationToken cancellationToken = default);
     }
 }

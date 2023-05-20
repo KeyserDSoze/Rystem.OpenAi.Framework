@@ -26,8 +26,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Rystem" Version="4.1.20" />
-        <PackageReference Include="Rystem.OpenAi" Version="3.0.3" />
+        <PackageReference Include="Rystem" Version="4.1.21" />
+        <PackageReference Include="Rystem.OpenAi" Version="3.0.4" />
     </ItemGroup>
 
     <ItemGroup>
