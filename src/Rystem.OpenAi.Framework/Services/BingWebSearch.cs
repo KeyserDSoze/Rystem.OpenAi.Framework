@@ -12,8 +12,11 @@ namespace Rystem.OpenAi.Framework
         //private const string BodyStart = "<body";
         //private const string BodyEnd = "</body>";
         //private static readonly Regex ScriptRegex = new(@"<script[\s\S]*?>[\s\S]*?<\/script>");
-        //private static readonly Regex BodyRegex = new(@"<body[\s\S]*?>[\s\S]*?<\/body>");
+        private static readonly Regex BodyRegex = new(@"<body[\s\S]*?>[\s\S]*?<\/body>");
         //private static readonly Regex StyleRegex = new(@"<style[\s\S]*?>[\s\S]*?<\/style>");
+        private static readonly Regex ScriptsAndStyles = new(@"<(script|style).*?</\1>");
+        private static readonly Regex AllTags = new(@"<.*?>");
+
         public BingWebSearch(OpenAiFrameworkDefaultSettings openAiFrameworkDefaultSettings,
             IHttpClientFactory httpClientFactory)
         {
@@ -31,19 +34,19 @@ namespace Rystem.OpenAi.Framework
                 using var stream = await value.Content.ReadAsStreamAsync().NoContext();
                 using var reader = new StreamReader(stream);
                 var html = await reader.ReadToEndAsync().NoContext();
-                //var body = BodyRegex.Match(html).Value;
-                //var matches = ScriptRegex.Matches(body);
-                //foreach (var scriptMatch in matches)
-                //{
-                //    body = body.Replace(scriptMatch.ToString(), string.Empty);
-                //}
-                //foreach (var styleMatch in StyleRegex.Matches(body))
-                //{
-                //    body = body.Replace(styleMatch.ToString(), string.Empty);
-                //}
+                var body = BodyRegex.Match(html).Value;
+                var matches = ScriptsAndStyles.Matches(body);
+                foreach (var scriptMatch in matches)
+                {
+                    body = body.Replace(scriptMatch.ToString(), string.Empty);
+                }
+                foreach (var styleMatch in AllTags.Matches(body))
+                {
+                    body = body.Replace(styleMatch.ToString(), string.Empty);
+                }
                 yield return new WebSearchPage
                 {
-                    Content = html,
+                    Content = body,
                     Description = result.Snippet,
                     Uri = result.Url
                 };

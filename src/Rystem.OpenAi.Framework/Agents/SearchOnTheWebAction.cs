@@ -19,7 +19,7 @@ namespace Rystem.OpenAi.Framework
             StringBuilder stringBuilder = new();
             await foreach (var search in _webSearchService.SearchAsync(request, cancellationToken))
             {
-                var splitFor = search.Content.Length / 10000;
+                var splitFor = search.Content.Length / 10000 + 1;
                 for (var i = 0; i < splitFor; i++)
                 {
                     var start = i * 10000;
@@ -34,7 +34,7 @@ namespace Rystem.OpenAi.Framework
                     {
                         status.Cost += response.Entity.CalculateCost();
                         var messageFromResponse = response.Entity.Result.Choices[0].Message.Content;
-                        if (messageFromResponse != "false")
+                        if (!messageFromResponse.ToLower().StartsWith("false"))
                             stringBuilder.AppendLine(messageFromResponse);
                     }
                 }
