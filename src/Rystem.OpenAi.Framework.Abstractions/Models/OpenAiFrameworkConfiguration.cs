@@ -41,6 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 Reason = "reasoning",
                 Criticism = "constructive self-criticism",
                 Speak = "thoughts summary to say to user",
+                Title = "title for the request",
                 Actions = new List<PlannedAction>
                  {
                      new PlannedAction

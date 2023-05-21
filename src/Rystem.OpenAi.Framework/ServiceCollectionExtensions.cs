@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddOpenAiFrameworkWithDefaultActions(this IServiceCollection services,
             Action<OpenAiSettings> settings,
             Action<OpenAiFrameworkBuilder> builder,
-            Action<OpenAiFrameworkDefaultSettings> defaultSettings,
+            Action<WebSearchingSettings> webSearchSettings,
             string? integrationName = default)
         {
             services
@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return services.AddOpenAiFramework(settings, build =>
             {
                 build
-                    .AddDefaultActions(defaultSettings);
+                    .AddDefaultActions(webSearchSettings);
                 builder
                     .Invoke(build);
             }, integrationName);

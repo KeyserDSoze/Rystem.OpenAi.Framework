@@ -6,10 +6,10 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class OpenAiFrameworkBuilderExtensions
     {
         public static OpenAiFrameworkBuilder AddDefaultActions(this OpenAiFrameworkBuilder builder,
-            Action<OpenAiFrameworkDefaultSettings> settings)
+            Action<WebSearchingSettings> webSearchSettings)
         {
-            var options = new OpenAiFrameworkDefaultSettings();
-            settings.Invoke(options);
+            var options = new WebSearchingSettings();
+            webSearchSettings.Invoke(options);
             builder.Services.TryAddSingleton(options);
             return builder
                 .AddAction<ListTasksToDoAction>()

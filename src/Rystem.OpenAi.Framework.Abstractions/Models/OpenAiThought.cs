@@ -15,5 +15,7 @@ namespace Rystem.OpenAi.Framework
         public string Criticism { get; set; }
         [JsonPropertyName("speak")]
         public string Speak { get; set; }
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
     }
 }

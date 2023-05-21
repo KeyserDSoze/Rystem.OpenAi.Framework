@@ -8,11 +8,6 @@ using Rystem.OpenAi.Chat;
 
 namespace Rystem.OpenAi.Framework
 {
-    public sealed class AgentStatus
-    {
-        public decimal Cost { get; set; }
-        public List<OpenAiFrameworkResponse> Responses { get; } = new List<OpenAiFrameworkResponse>();
-    }
     internal sealed class OpenAiAgent : IOpenAiAgent
     {
         private readonly IOpenAi _openAi;
@@ -29,7 +24,7 @@ namespace Rystem.OpenAi.Framework
         private readonly Queue<ChatMessage[]> _queue = new();
         public async ValueTask SolveTaskAsync(string taskDescription, CancellationToken cancellationToken = default)
         {
-            await ExecuteRequestAsync(cancellationToken, new ChatMessage
+            await ExecuteRequestAsync(cancellationToken, taskDescription, new ChatMessage
             {
                 Content = taskDescription,
                 Role = ChatRole.User
@@ -37,10 +32,10 @@ namespace Rystem.OpenAi.Framework
             while (_queue.Count > 0)
             {
                 var messages = _queue.Dequeue();
-                await ExecuteRequestAsync(cancellationToken, messages);
+                await ExecuteRequestAsync(cancellationToken, taskDescription, messages);
             }
         }
-        private async ValueTask ExecuteRequestAsync(CancellationToken cancellationToken, params ChatMessage[] messages)
+        private async ValueTask ExecuteRequestAsync(CancellationToken cancellationToken, string taskDescription, params ChatMessage[] messages)
         {
             var request = _openAi.Chat.Request(new ChatMessage
             {
@@ -60,7 +55,7 @@ namespace Rystem.OpenAi.Framework
                 var actionToDo = _actions.FirstOrDefault(x => x.Id == action.CommandId);
                 if (actionToDo != null)
                 {
-                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, action.ActionToDo, _status, cancellationToken).NoContext());
+                    _queue.Enqueue(await actionToDo.ExecuteAsync(_openAi, messageResponse.Thought, taskDescription, action.ActionToDo, _status, cancellationToken).NoContext());
                 }
             }
         }

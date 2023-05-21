@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using Microsoft.Bing.WebSearch;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace Rystem.OpenAi.Framework
 {
@@ -8,45 +10,61 @@ namespace Rystem.OpenAi.Framework
     {
         private readonly WebSearchClient _client;
         private readonly HttpClient _httpClient;
+        private readonly WebSearchingSettings _webSearchSettings;
         internal const string HttpClientName = "webSearchClientFromBing";
-        //private const string BodyStart = "<body";
-        //private const string BodyEnd = "</body>";
-        //private static readonly Regex ScriptRegex = new(@"<script[\s\S]*?>[\s\S]*?<\/script>");
-        private static readonly Regex BodyRegex = new(@"<body[\s\S]*?>[\s\S]*?<\/body>");
-        //private static readonly Regex StyleRegex = new(@"<style[\s\S]*?>[\s\S]*?<\/style>");
-        private static readonly Regex ScriptsAndStyles = new(@"<(script|style).*?</\1>");
-        private static readonly Regex AllTags = new(@"<.*?>");
 
-        public BingWebSearch(OpenAiFrameworkDefaultSettings openAiFrameworkDefaultSettings,
+        public BingWebSearch(WebSearchingSettings webSearchSettings,
             IHttpClientFactory httpClientFactory)
         {
             _client = new WebSearchClient(
-                new ApiKeyServiceClientCredentials(openAiFrameworkDefaultSettings.BingWebSearchSubscriptionKey));
+                new ApiKeyServiceClientCredentials(webSearchSettings.BingWebSearchSubscriptionKey));
             _httpClient = httpClientFactory.CreateClient(HttpClientName);
+            _webSearchSettings = webSearchSettings;
         }
         public async IAsyncEnumerable<WebSearchPage> SearchAsync(string query,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            var results = (await _client.Web.SearchAsync(query));
-            foreach (var result in results.WebPages.Value.Take(4))
+            var results = (await _client.Web.SearchAsync(query, count: 100));
+            foreach (var result in results.WebPages.Value)
             {
-                var value = await _httpClient.GetAsync(result.Url).NoContext();
-                using var stream = await value.Content.ReadAsStreamAsync().NoContext();
-                using var reader = new StreamReader(stream);
-                var html = await reader.ReadToEndAsync().NoContext();
-                var body = BodyRegex.Match(html).Value;
-                var matches = ScriptsAndStyles.Matches(body);
-                foreach (var scriptMatch in matches)
+                var text = string.Empty;
+                if (!_webSearchSettings.WithSelenium)
                 {
-                    body = body.Replace(scriptMatch.ToString(), string.Empty);
+                    var value = await _httpClient.GetAsync(result.Url).NoContext();
+                    using var stream = await value.Content.ReadAsStreamAsync().NoContext();
+                    using var reader = new StreamReader(stream);
+                    var html = await reader.ReadToEndAsync().NoContext();
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    text = doc.DocumentNode.SelectSingleNode("//body").InnerText
+                        .Replace('\n'.ToString(), string.Empty)
+                        .Replace('\t'.ToString(), string.Empty);
                 }
-                foreach (var styleMatch in AllTags.Matches(body))
+                else
                 {
-                    body = body.Replace(styleMatch.ToString(), string.Empty);
+                    var options = new ChromeOptions();
+                    options.SetLoggingPreference("performance", LogLevel.All);
+                    options.AddUserProfilePreference("intl.accept_languages", "en-US");
+                    options.AddUserProfilePreference("disable-popup-blocking", "true");
+                    options.AddArgument("--headless");
+                    options.AddArgument("--disable-gpu");
+                    options.AddArgument("--no-sandbox");
+                    options.LeaveBrowserRunning = false;
+                    IWebDriver driver = new ChromeDriver(options);
+                    try
+                    {
+                        driver.Navigate().GoToUrl(result.Url);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                    await Task.Delay(1000);
+                    text = driver.FindElement(By.TagName("body")).Text;
                 }
                 yield return new WebSearchPage
                 {
-                    Content = body,
+                    Content = text,
                     Description = result.Snippet,
                     Uri = result.Url
                 };
