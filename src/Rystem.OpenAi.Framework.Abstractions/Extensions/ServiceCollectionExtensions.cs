@@ -22,6 +22,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 .TryAddTransient<IOpenAiAgentFactory, OpenAiAgentFactory>();
             services
                 .TryAddTransient<IOpenAiAgent, OpenAiAgent>();
+            services.
+                TryAddTransient<IOpenAiTaskDefiner, ListTasksToDo>();
+            services
+                .TryAddTransient<IEmbeddingService, EmbeddingService>();
             return services;
         }
     }

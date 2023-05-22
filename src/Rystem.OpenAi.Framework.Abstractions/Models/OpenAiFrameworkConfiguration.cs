@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
         }
-        private static readonly string s_defaultResponse = new OpenAiFrameworkResponse()
+        private static readonly string s_defaultResponse = new AgentAction()
         {
             Thought = new OpenAiThought
             {
@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 Reason = "reasoning",
                 Criticism = "constructive self-criticism",
                 Speak = "thoughts summary to say to user",
-                Title = "title for the request",
+                Title = "create a title for the request in ",
                 Actions = new List<PlannedAction>
                  {
                      new PlannedAction

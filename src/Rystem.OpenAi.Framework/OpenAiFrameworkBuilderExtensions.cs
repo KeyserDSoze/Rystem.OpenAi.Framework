@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAddSingleton(options);
             return builder
                 .AddAction<ListTasksToDoAction>()
-                .AddAction<SearchOnTheWebAction>();
+                .AddAction<WebSearchAction>();
         }
     }
 }

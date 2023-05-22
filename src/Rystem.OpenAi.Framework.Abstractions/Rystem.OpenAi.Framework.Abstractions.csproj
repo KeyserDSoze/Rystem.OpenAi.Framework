@@ -28,6 +28,7 @@
     <ItemGroup>
         <PackageReference Include="Rystem" Version="4.1.21" />
         <PackageReference Include="Rystem.OpenAi" Version="3.0.4" />
+        <PackageReference Include="Rystem.RepositoryFramework.Abstractions" Version="4.1.21" />
     </ItemGroup>
 
     <ItemGroup>

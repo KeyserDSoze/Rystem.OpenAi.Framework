@@ -11,11 +11,13 @@ namespace Rystem.OpenAi.Framework
     internal sealed class OpenAiAgent : IOpenAiAgent
     {
         private readonly IOpenAi _openAi;
+        private readonly IOpenAiTaskDefiner _taskDefiner;
         private readonly IEnumerable<IOpenAiAction> _actions;
         private readonly OpenAiFrameworkConfiguration _configuration;
-        public OpenAiAgent(IOpenAi openAi, IEnumerable<IOpenAiAction> actions, OpenAiFrameworkConfiguration configuration)
+        public OpenAiAgent(IOpenAi openAi, IOpenAiTaskDefiner taskDefiner, IEnumerable<IOpenAiAction> actions, OpenAiFrameworkConfiguration configuration)
         {
             _openAi = openAi;
+            _taskDefiner = taskDefiner;
             _actions = actions;
             _configuration = configuration;
         }
@@ -47,9 +49,9 @@ namespace Rystem.OpenAi.Framework
             var response = await request
                 .WithTemperature(0)
                 .ExecuteAndCalculateCostAsync(cancellationToken);
-            var messageResponse = response!.Result!.Choices![0].Message!.Content!.FromJson<OpenAiFrameworkResponse>();
+            var messageResponse = response!.Result!.Choices![0].Message!.Content!.FromJson<AgentAction>();
             _status.Cost += response.CalculateCost();
-            _status.Responses.Add(messageResponse);
+            _status.Tasks.Add(messageResponse);
             foreach (var action in messageResponse.Thought.Actions)
             {
                 var actionToDo = _actions.FirstOrDefault(x => x.Id == action.CommandId);

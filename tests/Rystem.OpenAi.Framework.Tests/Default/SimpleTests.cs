@@ -8,7 +8,7 @@
             _openAiAgentFactory = openAiAgentFactory;
         }
         [Theory]
-        [InlineData("Azure", "Prepare a travel to Italy in Rome for 15-25 august 2023.")]
+        [InlineData("Azure", "Prepare a travel to Italy in Rome from Berlin for 15-25 august 2023.")]
         [InlineData("Azure", "Create an article for a blog about the movie Avatar 2 with a positive mood.")]
         public async Task TestAsync(string integrationName, string taskToDo)
         {

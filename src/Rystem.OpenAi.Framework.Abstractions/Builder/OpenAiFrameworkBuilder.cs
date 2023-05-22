@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RepositoryFramework;
 using Rystem.OpenAi.Framework;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,8 +19,15 @@ namespace Microsoft.Extensions.DependencyInjection
         public OpenAiFrameworkBuilder AddAction<TOpenAiAction>()
             where TOpenAiAction : class, IOpenAiAction
         {
-            Services.AddTransient<IOpenAiAction, TOpenAiAction>();
+            Services
+                .AddTransient<IOpenAiAction, TOpenAiAction>();
             OpenAiFrameworkConfiguration.Instance.MappedActions[_integrationName].Add(typeof(TOpenAiAction));
+            return this;
+        }
+        public OpenAiFrameworkBuilder AddEmbeddingStorage(Action<RepositorySettings<EmbeddedPackage, string>> settings)
+        {
+            Services
+                .AddRepository(settings);
             return this;
         }
     }

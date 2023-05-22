@@ -3,12 +3,12 @@ using Rystem.OpenAi.Chat;
 
 namespace Rystem.OpenAi.Framework
 {
-    internal sealed class SearchOnTheWebAction : IOpenAiAction
+    internal sealed class WebSearchAction : IOpenAiAction
     {
         private readonly IWebSearchService _webSearchService;
         public string Id => "2";
         public string Description => "perform a search on the web and insert here a description about what to search";
-        public SearchOnTheWebAction(IWebSearchService webSearchService)
+        public WebSearchAction(IWebSearchService webSearchService)
         {
             _webSearchService = webSearchService;
         }
