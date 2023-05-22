@@ -1,25 +1,20 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Rystem.OpenAi.Framework
+﻿namespace Rystem.OpenAi.Framework
 {
     internal sealed class OpenAiAgentFactory : IOpenAiAgentFactory
     {
         private readonly IOpenAiFactory _openAiFactory;
-        private readonly IEnumerable<IOpenAiAction> _actions;
-        private readonly OpenAiFrameworkConfiguration _configuration;
+        private readonly IOpenAiAgent _agent;
 
-        public OpenAiAgentFactory(IOpenAiFactory openAiFactory, IEnumerable<IOpenAiAction> actions, OpenAiFrameworkConfiguration configuration)
+        public OpenAiAgentFactory(IOpenAiFactory openAiFactory, IOpenAiAgent agent)
         {
             _openAiFactory = openAiFactory;
-            _actions = actions;
-            _configuration = configuration;
+            _agent = agent;
         }
 
         public IOpenAiAgent CreateAgent(string integrationName)
-            => new OpenAiAgent(_openAiFactory.Create(integrationName), _actions, _configuration)
-            {
-                IntegrationName = integrationName
-            };
+        {
+            _agent.Set(_openAiFactory.Create(integrationName), integrationName);
+            return _agent;
+        }
     }
 }
